@@ -221,17 +221,6 @@ function printObjectDatas(inputObject) {
   return lines;
 }
 
-// Megvizsgálja, hogy a paraméterként adott objektumokkal feltöltött tömbben melyiknem a legmagasabb az értéke
-function getHightestData(inputArray, propertyName) {
-  if (Array.isArray(inputArray)) {
-    for (i = 0; i < inputArray.length; i++) {
-      if (chechkIfObjectHasOwnProprty(inputArray[i], propertyName)) {
-
-      }
-    }
-  }
-}
-
 // Logaritmikus keresés rendezett objektumokkal feltöltött tömbben
 // Szövegrészletre való keresésre is. Nem case szenzitív
 // Paraméter: Tömb, objektumokkal feltöltve, a kulcs, amikben keresünk, érték, ami alapján keresünk
