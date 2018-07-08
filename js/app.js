@@ -215,7 +215,9 @@ function printObjectDatas(inputObject) {
     var lines = '';
     // Bejárjuk az objektumot
     for (var i in inputObject) {
-      lines += i + ' : ' + inputObject[i] + '\n';
+      if (Object.prototype.hasOwnProperty.call(inputObject, i)) {
+        lines += i + ' : ' + inputObject[i] + '\n';
+      }
     }
   }
   return lines;
@@ -228,7 +230,7 @@ function printObjectDatas(inputObject) {
 function binarySearcArrayOfObjectsByKey(InputArray, key, value) {
   // A bemeneti változók és keresett érték megfelelőségének vizsgálata
   // Tömböt kell megadni, amiben van leglalább egy elem, és a keresési feltételek is definiálva vannak
-  if ( (Array.isArray(InputArray)) && (InputArray.length > 0) && (key !== undefined) && (value !== undefined) )  {
+  if ( (Array.isArray(InputArray)) && (InputArray.length > 0) && (key !== 'undefined') && (value !== 'undefined') )  {
     // Változók definiálása (és inicializálása, amennyiben szükséges)
     var firstIndex = 0;
     var lastIndex = InputArray.length - 1;
@@ -315,12 +317,14 @@ function successAjax(xhttp) {
 
   // Bejárom a userDatasConsumables tömböt
   for (var k in userDatasConsumables) {
-    // Bejárom a tömbben tárolt objektumokat
-    for (var l in userDatasConsumables[k]) {
-      // Amennyiben olyan tulajdonságot találok, ahol az érték null
-      if (userDatasConsumables[k][l] === null) {
-        // Módosítom az aktuális elem tulajdonságának értékét "unknown"ra
-        userDatasConsumables[k] = setValueOfObjectProperty(userDatasConsumables[k], l, 'unknown');
+    if (Object.prototype.hasOwnProperty.call(userDatasConsumables, k)) {
+      // Bejárom a tömbben tárolt objektumokat
+      for (var l in userDatasConsumables[k]) {
+        // Amennyiben olyan tulajdonságot találok, ahol az érték null
+        if (userDatasConsumables[k][l] === null) {
+          // Módosítom az aktuális elem tulajdonságának értékét "unknown"ra
+          userDatasConsumables[k] = setValueOfObjectProperty(userDatasConsumables[k], l, 'unknown');
+        }
       }
     }
   }
