@@ -182,6 +182,20 @@ function deleteElementFromArrayOfObjects(inputArray, key, value) {
   return arrayToReturn;
 }
 
+// Objektum adatainak kiírása konzolra
+// Bemeneti paraméter: Objektum
+function printObjectDatas(inputObject) {
+// Megvizsgálom, hogy objektumot adtunk e meg paraméternek és az nem null
+  if (typeof inputObject === 'object' && inputObject !== null) {
+    // létrehozzuk a változót, amiben a sorokat fogjuk tárolni
+    var line = '';
+    // Bejárjuk az objektumot
+    for (var i in inputObject) {
+      line += i + ' : ' + inputObject[i] + '\n';
+    }
+  }
+  console.log(line);
+}
 function getData(url, callbackFunc) {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function () {
@@ -237,6 +251,10 @@ function successAjax(xhttp) {
         userDatasConsumables[k] = setValueOfObjectProperty(userDatasConsumables[k], l, 'unknown');
       }
     }
+  }
+
+  for (var m = 0; m < userDatasConsumables.length; m++) {
+    printObjectDatas(userDatasConsumables[m]);
   }
 }
 getData('/json/spaceships.json', successAjax);

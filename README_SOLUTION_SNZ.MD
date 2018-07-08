@@ -32,3 +32,20 @@ Függvénnyel megvizsgálom atömbben tárolt objektumok tulajdonságait, és am
 
 Bejárom a tömb elemetit, és ha az adott elem objektum, végignézem a tulajdonságait, és ahol null értéket találok módosítom "unknown"-ra.
     setValueOfObjectProperty();
+
+4. Írasd ki így kapott hajók adatait.
+
+**Végrehajtás**
+
+Bejárom a tömbben tárolt objektumokat és sorban kiírom az adatokat a konzolra.
+    printObjectDatas();
+
+5. Készítened kell egy statisztikát, mely kiírja a következő statisztikai adatokat: 
+
+* Egy fős (crew = 1) legénységgel rendelkező hajók darabszáma.
+* A legnagyobb cargo_capacity-vel rendelkező hajó neve (model)
+* Az összes hajó utasainak (passengers) összesített száma
+* A leghosszabb(lengthiness) hajó képének a neve
+
+**Végrehajtás**
+
