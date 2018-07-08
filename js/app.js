@@ -27,15 +27,32 @@ function chechkIfObjectHasOwnProprty(inpuObject, propertyName) {
 // Függvény, ami felülírja a paraméterként átadott objektum adott tulajdonságának értékét.
 // Paraméter: objektum, tulajdonság, új érték.
 // MEGJEGYZÉS: sokkal elegánsabb lenne, ha az objektum prototípusánál vennénk fel új metódusként az alábbi függvényt.
-function overwriteValueOfObjectProprty(inpuObject, propertyName, newValue); {
-  // Megvizsgáljuk, hogy a paraméterként kapott objektum rendelkezik e a módosítandó tulajdonsággal. (Máskülömben új)
-  // tulajdonság jönne létre az adott objektumban.
+function overwriteValueOfObjectProprty(inpuObject, propertyName, newValue) {
+  // Megvizsgáljuk, hogy a paraméterként kapott objektum rendelkezik e a módosítandó tulajdonsággal. (Máskülömben új
+  // tulajdonság jönne létre az adott objektumban.)
   if (chechkIfObjectHasOwnProprty(inpuObject, propertyName)) {
-    // A paraméterként kapott objektum adott tulajdonságának értékét módosítjuk az új értékre.
+    // Aa paraméterként kapott objektum adott tulajdonságának értékét módosítjuk az új értékre.
     inpuObject[`${propertyName}`] = newValue;
   }
 }
 
+// Javított buborékrendezés objektumokkal feltöltött tömbre.
+// Paraméter: tömb, objektum tulajdonsága.
+function advBubbleSortArrayOfObjects(inputArray, propertyName) {
+  var i = inputArray.length - 1;
+  var j = 0;
+  while (i >= 2) {
+    var csere = 0;
+    for (j = 0; j < i; j++) {
+      if (inputArray[j][`${propertyName}`] > inputArray [j + 1][`${propertyName}`]) {
+        [inputArray[j], inputArray[j + 1]] = [inputArray[j + 1], inputArray[j]];
+        csere = j;
+      }
+    }
+    i = csere;
+  }
+  return inputArray;
+}
 
 function getData(url, callbackFunc) {
   var xhttp = new XMLHttpRequest();
@@ -52,10 +69,19 @@ function successAjax(xhttp) {
   // Innen lesz elérhető a JSON file tartalma, tehát az adatok amikkel dolgoznod kell
   var userDatas = JSON.parse(xhttp.responseText);
   // Innen lehet hívni.
-  
 
+  console.log(userDatas);
 
+  for (var i = 0; i < userDatas.length; i++) {
+    if (chechkIfObjectHasOwnProprty(userDatas[i], 'cost_in_credits')) {
+      console.log(1);
+      if (userDatas[i].cost_in_credits === null) {
+        overwriteValueOfObjectProprty(userDatas[i], 'cost_in_credits', 0);
+      }
+    }
+  }
+  console.log(userDatas);
 
-
+  console.log(advBubbleSortArrayOfObjects(userDatas, 'cost_in_credits'));
 }
 getData('/json/spaceships.json', successAjax);
