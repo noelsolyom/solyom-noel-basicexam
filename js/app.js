@@ -210,6 +210,53 @@ function getHightestData(inputArray, propertyName) {
   }
 }
 
+// Logaritmikus keresés rendezett objektumokkal feltöltött tömbben
+// Szövegrészletre való keresésre is. Nem case szenzitív
+// Paraméter: Tömb, objektumokkal feltöltve, a kulcs, amikben keresünk, érték, ami alapján keresünk
+// A visszatérési érték a megtalált objektum, ha nincs találat akkor üres objektum, különben -1
+function binarySearcArrayOfObjectsByKey(InputArray, key, value) {
+  // A bemeneti változók és keresett érték megfelelőségének vizsgálata
+  // Tömböt kell megadni, amiben van leglalább egy elem, és a keresési feltételek is definiálva vannak
+  if ( (Array.isArray(InputArray)) && (InputArray.length > 0) && (key !== undefined) && (value !== undefined) )  {
+    // Változók definiálása (és inicializálása, amennyiben szükséges)
+    var firstIndex = 0;
+    var lastIndex = InputArray.length - 1;
+    var middleIndex;
+    var flag = false;
+    // Feltételezzük, hogy nem lesz találat
+    var objectToReturn = {};
+    // A ciklus addig megy, amíg a jelzőváltozó hamis, tehát még nincs találatunk és az első index kisebb, mint az utolsó index
+    //                                                                            (tehát még nem folyott el a tömb)
+    while (!flag && firstIndex <= lastIndex) {
+      // A középső indexet a paraméterként átadott tömb középső elemének indexére állítjuk
+      middleIndex = Math.floor((firstIndex + lastIndex) / 2);
+      // Ha a paraméter tömb middleindex indexű elemének kulcsában található érték megegyezik a keresési feltétellel
+
+      if (InputArray[middleIndex][key].toLowerCase().indexOf(value.toLowerCase()) > -1) {
+        // A jelzőváltozót igazra állítjuk
+        flag = true;
+        // A visszatérési érték a megtalált objektum
+        objectToReturn = InputArray[middleIndex];
+        // És kilép a ciklusból
+        break;
+        // Ha a keresési feltétel kisebb, mint a paraméter tömb middleindex indexű elemének kulcsában található érték
+      } else if (value < InputArray[middleIndex][key].toLowerCase()) {
+        // Az utolsó indexet a középső indexel egyel kisebb értékkel tesszük egyenlővé
+        lastIndex = middleIndex - 1;
+        // Egyébként (tehát ha a keresési feltétel nagyobb, mint a paraméter tömb middleindex indexű elemének kulcsában található érték)
+      } else {
+        // Az első indexet a középső indexel egyel nagyobb értékkel tesszük egyenlővé
+        firstIndex = middleIndex + 1;
+      }
+    }
+    // Ha a bemenetre nem megfelelően adtuk meg a bemeneti változót és/vagy a keresési paramétereket
+  }  else {
+    // A visszatérési értéket -1-gyel deklaráljuk és inicializáljuk
+    objectToReturn = -1;
+  }
+  return objectToReturn;
+}
+
 function getData(url, callbackFunc) {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function () {
@@ -285,21 +332,21 @@ function successAjax(xhttp) {
   console.log('Number of vechiles where Crew = 1: ' + countData);
 
   // Változó létrehozása a legnagyobb cargo capacity-vel rendelkező objektum adatainak tárolsásához
-  var hightestData1 = userDatasConsumables[0];
+  var hightestData1 = 0;
   // Változó létrehozása a legnagyobb lenghtiness értékkel rendelkező objektum adatanak a tárolásához
-  var hightestData2 = userDatasConsumables[0];
+  var hightestData2 = 0;
 
   for (var n = 0; n < userDatasConsumables.length - 1; n++) {
     if (chechkIfObjectHasOwnProprty(userDatasConsumables[n], 'cargo_capacity') && userDatasConsumables[n].cargo_capacity !== 'unknown') {
       userDatasConsumables[n] = setTypeOfObjectProperty(userDatasConsumables[n], 'cargo_capacity', 'number' );
-      if (userDatasConsumables[n].cargo_capacity !== 'unknown' && (userDatasConsumables[n].cargo_capacity > userDatasConsumables[n + 1].cargo_capacity) ) {
-        hightestData1 = userDatasConsumables[n];
+      if (userDatasConsumables[n].cargo_capacity !== 'unknown' && (userDatasConsumables[n].cargo_capacity < userDatasConsumables[n + 1].cargo_capacity) ) {
+        hightestData1 = userDatasConsumables[n + 1];
       }
     }
     if (chechkIfObjectHasOwnProprty(userDatasConsumables[n], 'lengthiness') && userDatasConsumables[n].lengthiness !== 'unknown') {
       userDatasConsumables[n] = setTypeOfObjectProperty(userDatasConsumables[n], 'lengthiness', 'number' );
-      if (userDatasConsumables[n].lengthiness !== 'unknown' && (userDatasConsumables[n].lengthiness > userDatasConsumables[n + 1].lengthiness) ) {
-        hightestData2 = userDatasConsumables[n];
+      if (userDatasConsumables[n].lengthiness !== 'unknown' && (userDatasConsumables[n].lengthiness < userDatasConsumables[n + 1].lengthiness) ) {
+        hightestData2 = userDatasConsumables[n + 1];
       }
     }
   }
@@ -323,6 +370,16 @@ function successAjax(xhttp) {
   // Kiírom konzolra a legnagyobb leghtiness érékkel rendelkező jármű képének a nevét.
   console.log('Image of the vechile having the highest leghtiness: ' + hightestData2.image);
 
-  console.log(userDatasConsumables);
+  // az userDatasConsumables-ben tárolt tömb sorbarendezése a tömbbent tárolt model tulajdonság alapján javított buborékrendezéssel
+  // Akár külöön változóban is megadhatom, hogy mi alapján és mit szeretnék keresni
+  var searcyBy = 'model';
+  var searchValue = 'yt';
+
+  // A keresési feltételeket váltzóként adom át a sorbarendező és kereső algoritmusoknak
+  var userDatasName = advBubbleSortArrayOfObjects(userDatasConsumables,  searcyBy);
+  // Az userDatasName-ben tárolt tömbben rákeresek a szóegyezésre
+  var objectToSearch = binarySearcArrayOfObjectsByKey(userDatasName, searcyBy, searchValue);
+  // kiírom konzolja az így kapott hajó adatait
+  printObjectDatas(objectToSearch);
 }
 getData('/json/spaceships.json', successAjax);

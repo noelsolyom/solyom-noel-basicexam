@@ -1,3 +1,8 @@
+**FONTOS MEGJEGYZÉSEK**
+Az app.js fájlba írt függvények majdnem minden lépése kommentelve van. Ebből fakadóan a fájl majdnem kétszer akkora, mint kommentek nélkül lenne. Az egyes függvényekben törekedtem a változók és függvények neveinek oly megválasztására, hogy azok beszéldesek legyenek.
+
+Mivel az összes függvény egyazon fájlban található, emiatt az app.js fájl hosszú, több, mint 300 sor. Időhiány miatt nem válogattam szét az egyes függvényeket funkciójuk szerint (általános, rendező, keresó, modosító függvények), úgy az egyes fájlok külön-külön sokkal rövidebbek lennének.
+
 Feladat megoldásának menete:
 
 1. A kapott adatokat rendezd ár(cost_in_credits) szerint növekvő sorrendbe. (advanced bubble)
@@ -77,3 +82,20 @@ Bejárom a tömbben tárolt objektumokat és sorban kiírom az adatokat a konzol
     Így már valódi számokat hasonlíthatok össze.
 
 6. Legyen lehetőség a hajókra rákeresni _model_ szerint. (logaritmikus/binary sort)
+
+    * A keresett nevet paraméterként kapja a függvényed.
+    * A keresés nem case sensitive
+    * Nem csak teljes egyezést vizsgálunk, tehát ha a keresett szöveg szerepel a hajó nevében már az is találat
+    * Ha több találatunk is lenne, azt a hajót adjuk vissza, amelyiknek a neve ABC sorrendben a legelső lenne.
+    * Írasd ki a hajó adatait.
+
+    MEGJEGYZÉS: ahhoz, hogy logaritmikus keresőalgorimust hasunálhassak bármilyen adatstruktúrán, feltétel, hogy a keresési szempont szerint rendezetten legyenek az adatok.
+
+    Összetett a feladat;
+    Első lépésben sorbarendezem az adatokat "model" azaz név szerint.
+    
+    A keresőalgoritmus paraméterként kapja meg a keresett nevet.
+        A keresőalgoritmus nem case sensitive és részleges egyezést is vizsgál.
+        Az első találatot adja vissza a függvény.
+    
+    A hajó adatait a konzolra írom ki.
