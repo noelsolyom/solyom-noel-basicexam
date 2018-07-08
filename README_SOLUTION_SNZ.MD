@@ -49,3 +49,31 @@ Bejárom a tömbben tárolt objektumokat és sorban kiírom az adatokat a konzol
 
 **Végrehajtás**
 
+   * Egy fős (crew = 1) legénységgel rendelkező hajók darabszáma.
+    Végigjárom a tömbben tárolt objektumokat, és ahol a crew tulajdonság egyenlő 1, azokat megszámolom.
+    A számolást az előző (adatok kiírása konzolra) ciklussal teszem meg.
+    Mivel a crew tulajdonság jelen pillanatban string typusú, ugyan megtehetném, hogy laza egyenlőséget vizsgálok, ám úgy döntöttem,mivel várhatóan számérték szerepel a crew tulajdonság értéknél, ezért kapásból számmá is alakítom az előzőleg megírt függvényemmel. Mivel korábban minden null értéket "unknown"ra állítottam, ezt a kivételt feltételvizsgálathoz kötöm.
+        setTypeOfPropertyInObjectOfArray();
+    Így már érték és típusegyenlőséget is vizsgálhatok.
+
+* A legnagyobb cargo_capacity-vel rendelkező hajó neve (model)
+    Végigjárom a tömbben tárolt objektumokat, és figyelem a cargo_capacity értéket.
+    A vizsgálathoz új ciklust fogok használni, habár használhattam volna az előzőt is.
+    Mivel a cargo_capacity tulajdonság jelen pillanatban string typusú, ugyan megtehetném, hogy laza egyenlőséget vizsgálok, ám úgy döntöttem, mivel várhatóan számérték szerepel a cargo_capacity tulajdonság értéknél, ezért kapásból számmá is alakítom az előzőleg megírt függvényemmel. Mivel korábban minden null értéket "unknown"ra állítottam, ezt a kivételt feltételvizsgálathoz kötöm.
+        setTypeOfPropertyInObjectOfArray();
+    Így már valódi számokat hasonlíthatok össze.
+
+* Az összes hajó utasainak (passengers) összesített száma
+    Végigjárom a tömbben tárolt objektumokat, és figyelem a passangers értéket.
+    A vizsgálathoz új ciklust fogok használni, habár használhattam volna az előzőt is.
+    Mivel a passangers tulajdonság jelen pillanatban string typusú, ugyan megtehetném, hogy laza egyenlőséget vizsgálok, ám úgy döntöttem, mivel várhatóan számérték szerepel a passengers tulajdonság értéknél, ezért kapásból számmá is alakítom az előzőleg megírt függvényemmel. Mivel korábban minden null értéket "unknown"ra állítottam, ezt a kivételt feltételvizsgálathoz kötöm.
+        setTypeOfPropertyInObjectOfArray();
+    Így már valódi számokat adhatok össze.
+
+* A leghosszabb(lengthiness) hajó képének a neve
+    Mivel hasonló már volt, ezért egy korábbi ciklusban végzem el a keresést.
+    Mivel a lengthiness tulajdonság jelen pillanatban string typusú, ugyan megtehetném, hogy laza egyenlőséget vizsgálok, ám úgy döntöttem, mivel várhatóan számérték szerepel a lengthiness tulajdonság értéknél, ezért kapásból számmá is alakítom az előzőleg megírt függvényemmel. Mivel korábban minden null értéket "unknown"ra állítottam, ezt a kivételt feltételvizsgálathoz kötöm.
+        setTypeOfPropertyInObjectOfArray();
+    Így már valódi számokat hasonlíthatok össze.
+
+6. Legyen lehetőség a hajókra rákeresni _model_ szerint. (logaritmikus/binary sort)

@@ -163,10 +163,12 @@ function advBubbleSortArrayOfObjects(inputArray, propertyName) {
 // Bemeneti paraméterek: Tömb, ami obektumokkal van feltöltve; kulcs, ahol keres; érték, amit keres
 // Visszatérési érték: Módosított tömb, a törölt elemek nélkül. -1, ha nem tömböt adtunk meg
 function deleteElementFromArrayOfObjects(inputArray, key, value) {
+  // Definiáljuk a kimeneti változót
+  var arrayToReturn;
   // Megvizsgáljuk, tömböt adtunk e meg paraméternek
   if (Array.isArray(inputArray)) {
     // Másolatot készítünk a bemeneti paraméterről
-    var arrayToReturn = copyArray(inputArray);
+    arrayToReturn = copyArray(inputArray);
     // Tömb bejárása ciklussal
     for (var i = 0; i < arrayToReturn.length; i++) {
       // Ha a bemeneti változó adott kulcsának értéke megegyezik a keresési feltétellel
@@ -177,7 +179,7 @@ function deleteElementFromArrayOfObjects(inputArray, key, value) {
         i -= 1;
       }
     } // Ha nem tömböt adtunk meg, a visszatérési érték -1.
-  } else {var arrayToReturn = -1;}
+  } else {arrayToReturn = -1;}
   // A függvény visszatér a visszatérési értékkel
   return arrayToReturn;
 }
@@ -196,6 +198,18 @@ function printObjectDatas(inputObject) {
   }
   console.log(line);
 }
+
+// Megvizsgálja, hogy a paraméterként adott objektumokkal feltöltött tömbben melyiknem a legmagasabb az értéke
+function getHightestData(inputArray, propertyName) {
+  if (Array.isArray(inputArray)) {
+    for (i = 0; i < inputArray.length; i++) {
+      if (chechkIfObjectHasOwnProprty(inputArray[i], propertyName)) {
+
+      }
+    }
+  }
+}
+
 function getData(url, callbackFunc) {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function () {
@@ -253,8 +267,62 @@ function successAjax(xhttp) {
     }
   }
 
+  // változó létrehozása adatok számlálásához
+  var countData = 0;
+
   for (var m = 0; m < userDatasConsumables.length; m++) {
+    // Megvizsgálom, hogy a crew tulajdonság nem lett e korábban módosítva.
+    if (userDatasConsumables[m].crew !== 'unknown') {
+      // Amennyiben nem unknown szerepel értékként, módosítom az érték típusát számra.
+      userDatasConsumables[m] = setTypeOfObjectProperty(userDatasConsumables[m], 'crew', 'number' );
+    }
+    // Megszámolom a crew===1 értékkel rendelkező járműveket
+    if (userDatasConsumables[m].crew === 1) {countData += 1;}
+    // Kiírom a kapott objektum értékeit
     printObjectDatas(userDatasConsumables[m]);
   }
+  // Kiírom konzolra a crew===1 járművek mennyiségét.
+  console.log('Number of vechiles where Crew = 1: ' + countData);
+
+  // Változó létrehozása a legnagyobb cargo capacity-vel rendelkező objektum adatainak tárolsásához
+  var hightestData1 = userDatasConsumables[0];
+  // Változó létrehozása a legnagyobb lenghtiness értékkel rendelkező objektum adatanak a tárolásához
+  var hightestData2 = userDatasConsumables[0];
+
+  for (var n = 0; n < userDatasConsumables.length - 1; n++) {
+    if (chechkIfObjectHasOwnProprty(userDatasConsumables[n], 'cargo_capacity') && userDatasConsumables[n].cargo_capacity !== 'unknown') {
+      userDatasConsumables[n] = setTypeOfObjectProperty(userDatasConsumables[n], 'cargo_capacity', 'number' );
+      if (userDatasConsumables[n].cargo_capacity !== 'unknown' && (userDatasConsumables[n].cargo_capacity > userDatasConsumables[n + 1].cargo_capacity) ) {
+        hightestData1 = userDatasConsumables[n];
+      }
+    }
+    if (chechkIfObjectHasOwnProprty(userDatasConsumables[n], 'lengthiness') && userDatasConsumables[n].lengthiness !== 'unknown') {
+      userDatasConsumables[n] = setTypeOfObjectProperty(userDatasConsumables[n], 'lengthiness', 'number' );
+      if (userDatasConsumables[n].lengthiness !== 'unknown' && (userDatasConsumables[n].lengthiness > userDatasConsumables[n + 1].lengthiness) ) {
+        hightestData2 = userDatasConsumables[n];
+      }
+    }
+  }
+
+  // Kiírom konzolra a legnagyobb cargo capacityvel rendelkező jármű nevét.
+  console.log('Model name having the highest cargo capacity: ' + hightestData1.model);
+
+  // Változó létrehozása a passengers értékek összesítéséhez.
+  var sumData = 0;
+
+  for (var p = 0; p < userDatasConsumables.length - 1; p++) {
+    if (chechkIfObjectHasOwnProprty(userDatasConsumables[p], 'passengers') && userDatasConsumables[p].passengers !== 'unknown') {
+      userDatasConsumables[p] = setTypeOfObjectProperty(userDatasConsumables[p], 'passengers', 'number' );
+      sumData += userDatasConsumables[p].passengers;
+    }
+  }
+
+  // Kiírom konzolra a passengers összesített értékét.
+  console.log('Sum of passengers: ' + sumData);
+
+  // Kiírom konzolra a legnagyobb leghtiness érékkel rendelkező jármű képének a nevét.
+  console.log('Image of the vechile having the highest leghtiness: ' + hightestData2.image);
+
+  console.log(userDatasConsumables);
 }
 getData('/json/spaceships.json', successAjax);
