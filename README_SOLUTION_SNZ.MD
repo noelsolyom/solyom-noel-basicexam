@@ -25,4 +25,10 @@ Ha ezzel megvagyok, javított buborékrendezéssel rendezem az adatokat.
 2. Töröld az összes olyan adatot (tehát az objektumot a tömbből), ahol a consumables értéke NULL. Fontos, hogy ne csak undefined-ra állítsd a tömbelemet!!!
 
 **Végrehajtás**
+Függvénnyel megvizsgálom atömbben tárolt objektumok tulajdonságait, és amennyiben az adott tulajdonságnál a keresési feltételnek megfelelő érték van, törlöm az adott elemet a tömbből
     deleteElementFromArrayOfObjects();
+
+3. Az összes NULL értéket (minden objektum minden tulajdonságánál) módosítsd "unknown"-ra
+
+Bejárom a tömb elemetit, és ha az adott elem objektum, végignézem a tulajdonságait, és ahol null értéket találok módosítom "unknown"-ra.
+    setValueOfObjectProperty();

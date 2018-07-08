@@ -98,28 +98,43 @@ function overwriteValueOfObjectProprty(inpuObject, propertyName, newValue) {
 // Paraméter: Objektum, tulajdonság, új típus
 // Megjegyzés: csak akkor módosít, ha a tulajdonság típusa nem egyezik meg az új típussal
 // Visszatérési érték: módosított új objektum, ha rosszul adtuk meg az új típust vagy a tulajdonságot, akkor -1.
-function setTypeOfObjectProperty(inputObject, property, newType) {
+function setTypeOfObjectProperty(inputObject, propertyName, newType) {
   // Definiáljuk a kimeneti változót
   var objectToReturn = {};
   // Megvizsgáljuk, hogy a módosítandó tulajdonság létezik e az objektumokban.
-  if (chechkIfObjectHasOwnProprty(inputObject, property)) {
+  if (chechkIfObjectHasOwnProprty(inputObject, propertyName)) {
     // Másolatot készítünk az objektumról
-    var temp = 0;
+    objectToReturn = copyObject(inputObject);
     // Amennyiben létezik a tulajdonság, megvizsgáljuk, hogy number-ré vagy string-gé akarjuk módosítani értéket
     // Amennyiben numberré szeretnénk módosítani és pillanatnyilag nem number típusú
-    if (typeof inputObject[`${property}`] !== 'number' && newType === 'number') {
-    // Módosítjuk az érték típusát
-      inputObject[`${property}`] = parseInt(inputObject[`${property}`]);
-    } else if (newType === 'string') {
-      for (i in copyOfArray) {
-        if (typeof copyOfArray[i][`${property}`] !== newType) {
-          copyOfArray[i][`${property}`] = copyOfArray[i][`${property}`].toString();
-        }
-        arrayToReturn.push(copyOfArray[i]);
-      } // Amennyiben rosszul adtuk meg az új tulajdonság típuság, -1-el visszatérünk
-    } else {var inputArray = -1;}
+    if (typeof objectToReturn[`${propertyName}`] !== 'number' && newType === 'number') {
+    // Elátroljuk a régi értéket egy változóban
+      var temp = parseInt(objectToReturn[`${propertyName}`], 10);
+      // Majd hozzárendeljük a változóban tárolt értéket az objektum tulajdonságához
+      objectToReturn[`${propertyName}`] = temp;
+      // Amennyiben string-gé szeretnénk módosítani és pillanatnyilag nem string típusú
+    } else if (typeof objectToReturn[`${propertyName}`] !== 'string' && newType === 'string') {
+      objectToReturn[`${propertyName}`] = objectToReturn[`${propertyName}`].toString;
+      // Amennyiben rosszul adtuk meg az új tulajdonság típuság, vagy egyéb típusú a vizsgált tulajdonság, -1-el visszatérünk
+    } // else {objectToReturn = -1;}
     // Amennyiben nincs ilyen tulajdonsága az objektumoknak, -1-el visszatérünk
-  } else {arrayToReturn = -1;}
+  }  else {objectToReturn = -1;}
+  // A függvény visszatér a viszatérési értékkel
+  return objectToReturn;
+}
+
+function setValueOfObjectProperty(inputObject, propertyName, newValue) {
+  // Definiáljuk a kimeneti változót
+  var objectToReturn = {};
+  // Megvizsgáljuk, hogy a módosítandó tulajdonság létezik e az objektumokban.
+  if (chechkIfObjectHasOwnProprty(inputObject, propertyName)) {
+    // Másolatot készítünk az objektumról
+    objectToReturn = copyObject(inputObject);
+    // Amennyiben létezik a tulajdonság, módosítjuk az értékét
+
+    objectToReturn[`${propertyName}`] = newValue;
+    // Amennyiben nincs ilyen tulajdonsága az objektumoknak, -1-el visszatérünk
+  }  else {objectToReturn = -1;}
   // A függvény visszatér a viszatérési értékkel
   return objectToReturn;
 }
@@ -182,9 +197,13 @@ function successAjax(xhttp) {
   // Innen lesz elérhető a JSON file tartalma, tehát az adatok amikkel dolgoznod kell
   var userDatas = JSON.parse(xhttp.responseText);
   // Innen lehet hívni.
+
+  //
+  // Feladatok végrehajtása
+  //
   // Másolatot készítünk a userDatas-ról és innentől ezzel a tömbbel dolgozunk
   var userDatasCopy = copyArray(userDatas);
-
+  //
   // A userDAtasCopy-ban tárolt tömb objektumaiban cost_in_credits tulajdonságoknál szereplő null értékek 0-ra módosítása
   for (var i in userDatasCopy) {
     if (chechkIfObjectHasOwnProprty(userDatasCopy[i],  'cost_in_credits')) {
@@ -194,19 +213,30 @@ function successAjax(xhttp) {
     }
   }
 
-  var userDatasCopySet = copyArray(userDatasCopy);
+  var userDatasSet = copyArray(userDatasCopy);
 
-  // Az userDatasCopy-ban tárolt objektumok cost_in_credist tulajdonságaiban tárolt értékek number típusúvá alakítása
-  for (var j in userDatasCopySet) {
-    if (chechkIfObjectHasOwnProprty(userDatasCopySet[j],  'cost_in_credits')) {
-      setTypeOfObjectProperty(userDatasCopySet[j], 'cost_in_credits', 'number' );
+  // Az userDatasSet-ban tárolt objektumok cost_in_credist tulajdonságaiban tárolt értékek number típusúvá alakítása
+  for (var j in userDatasSet) {
+    if (chechkIfObjectHasOwnProprty(userDatasSet[j],  'cost_in_credits')) {
+      userDatasSet[j] = setTypeOfObjectProperty(userDatasSet[j], 'cost_in_credits', 'number' );
     }
   }
 
-  // az userDatasCopySet-ben tárolt tömb sorbarendezése a tömbbent tárolt cost_in_credits tulajdonság alapján javított buborékrendezéssel
-  var userDatasCopySetSorted = advBubbleSortArrayOfObjects(userDatasCopySet,  'cost_in_credits');
-  // Elemek törlése az userDatasCopySetSorted-ben tárolt tömbből, ahol a consumables értéke null
-  var userDatasCopySetSortedButConsumables = deleteElementFromArrayOfObjects(userDatasCopySetSorted, 'consumables', null);
-  //
+  // az userDatasSet-ben tárolt tömb sorbarendezése a tömbbent tárolt cost_in_credits tulajdonság alapján javított buborékrendezéssel
+  var userDatasSorted = advBubbleSortArrayOfObjects(userDatasSet,  'cost_in_credits');
+  // Elemek törlése az userDatasSorted-ben tárolt tömbből, ahol a consumables értéke null
+  var userDatasConsumables = deleteElementFromArrayOfObjects(userDatasSorted, 'consumables', null);
+
+  // Bejárom a userDatasConsumables tömböt
+  for (var k in userDatasConsumables) {
+    // Bejárom a tömbben tárolt objektumokat
+    for (var l in userDatasConsumables[k]) {
+      // Amennyiben olyan tulajdonságot találok, ahol az érték null
+      if (userDatasConsumables[k][l] === null) {
+        // Módosítom az aktuális elem tulajdonságának értékét "unknown"ra
+        userDatasConsumables[k] = setValueOfObjectProperty(userDatasConsumables[k], l, 'unknown');
+      }
+    }
+  }
 }
 getData('/json/spaceships.json', successAjax);
