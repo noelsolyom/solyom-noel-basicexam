@@ -21,3 +21,8 @@ Ez után a cost_in_credits tulajdonságok értékeinek a típusát átmódosíto
     setTypeOfPropertyInObjectOfArray();
 Ha ezzel megvagyok, javított buborékrendezéssel rendezem az adatokat.
     advBubbleSortArrayOfObjects();
+
+2. Töröld az összes olyan adatot (tehát az objektumot a tömbből), ahol a consumables értéke NULL. Fontos, hogy ne csak undefined-ra állítsd a tömbelemet!!!
+
+**Végrehajtás**
+    deleteElementFromArrayOfObjects();

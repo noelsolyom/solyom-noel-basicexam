@@ -126,6 +126,7 @@ function setTypeOfObjectProperty(inputObject, property, newType) {
 
 // Javított buborékrendezés objektumokkal feltöltött tömbre.
 // Paraméter: tömb, objektum tulajdonsága.
+// Visszatérési érték, sorbarendezett új tömb
 function advBubbleSortArrayOfObjects(inputArray, propertyName) {
   var arrayToReturn = copyArray(inputArray);
   var i = arrayToReturn.length - 1;
@@ -140,6 +141,29 @@ function advBubbleSortArrayOfObjects(inputArray, propertyName) {
     }
     i = csere;
   }
+  return arrayToReturn;
+}
+
+// Törli a tömbből az adott elemet, ha az adott kulcs értéke megegyezik a keresési feltétellel
+// Bemeneti paraméterek: Tömb, ami obektumokkal van feltöltve; kulcs, ahol keres; érték, amit keres
+// Visszatérési érték: Módosított tömb, a törölt elemek nélkül. -1, ha nem tömböt adtunk meg
+function deleteElementFromArrayOfObjects(inputArray, key, value) {
+  // Megvizsgáljuk, tömböt adtunk e meg paraméternek
+  if (Array.isArray(inputArray)) {
+    // Másolatot készítünk a bemeneti paraméterről
+    var arrayToReturn = copyArray(inputArray);
+    // Tömb bejárása ciklussal
+    for (var i = 0; i < arrayToReturn.length; i++) {
+      // Ha a bemeneti változó adott kulcsának értéke megegyezik a keresési feltétellel
+      if (arrayToReturn[i][key] === value) {
+        // A bemeneti változó adott elemének törlése
+        arrayToReturn.splice(i, 1);
+        // Mivel a tömb rövidebb lett, a ciklusváltozó egyel történeő vissazállítása (következő elem is lehet megfelel a feltételeknek)
+        i -= 1;
+      }
+    } // Ha nem tömböt adtunk meg, a visszatérési érték -1.
+  } else {var arrayToReturn = -1;}
+  // A függvény visszatér a visszatérési értékkel
   return arrayToReturn;
 }
 
@@ -173,15 +197,16 @@ function successAjax(xhttp) {
   var userDatasCopySet = copyArray(userDatasCopy);
 
   // Az userDatasCopy-ban tárolt objektumok cost_in_credist tulajdonságaiban tárolt értékek number típusúvá alakítása
-  for (var i in userDatasCopySet) {
-    if (chechkIfObjectHasOwnProprty(userDatasCopySet[i],  'cost_in_credits')) {
-      setTypeOfObjectProperty(userDatasCopySet[i], 'cost_in_credits', 'number' );
+  for (var j in userDatasCopySet) {
+    if (chechkIfObjectHasOwnProprty(userDatasCopySet[j],  'cost_in_credits')) {
+      setTypeOfObjectProperty(userDatasCopySet[j], 'cost_in_credits', 'number' );
     }
   }
 
   // az userDatasCopySet-ben tárolt tömb sorbarendezése a tömbbent tárolt cost_in_credits tulajdonság alapján javított buborékrendezéssel
   var userDatasCopySetSorted = advBubbleSortArrayOfObjects(userDatasCopySet,  'cost_in_credits');
-
-  console.log(userDatasCopySetSorted);
+  // Elemek törlése az userDatasCopySetSorted-ben tárolt tömbből, ahol a consumables értéke null
+  var userDatasCopySetSortedButConsumables = deleteElementFromArrayOfObjects(userDatasCopySetSorted, 'consumables', null);
+  //
 }
 getData('/json/spaceships.json', successAjax);
