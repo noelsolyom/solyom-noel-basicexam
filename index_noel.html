@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   <title>Title</title>
+   <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="spaceship-list">
+      <h1>Spaceships</h1>
+        <h2>Model name: <span class="spaceship-name"></span></h2>
+        <h3>Model data:</h3>
+        <p><span class = "spaceship-data"></span></p>
+    </div>
+    <div class="one-spaceship">
+
+      <div class="searchbar">
+        <input type="text" id="search-text" onKeyUp="getData('/json/spaceships.json', successAjax)">
+        
+        <button id="search-button" onclick ="getData('/json/spaceships.json', successAjax)">Search</button>
+      </div>
+    </div>
+  </div>
+<script src="/js/app.js"></script>
+</body>
+
+</html>

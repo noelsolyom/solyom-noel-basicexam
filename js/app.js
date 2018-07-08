@@ -109,7 +109,7 @@ function setTypeOfObjectProperty(inputObject, propertyName, newType) {
     // Amennyiben numberré szeretnénk módosítani és pillanatnyilag nem number típusú
     if (typeof objectToReturn[`${propertyName}`] !== 'number' && newType === 'number') {
     // Elátroljuk a régi értéket egy változóban
-      var temp = parseInt(objectToReturn[`${propertyName}`], 10);
+      var temp = Number(objectToReturn[`${propertyName}`]);
       // Majd hozzárendeljük a változóban tárolt értéket az objektum tulajdonságához
       objectToReturn[`${propertyName}`] = temp;
       // Amennyiben string-gé szeretnénk módosítani és pillanatnyilag nem string típusú
@@ -139,17 +139,39 @@ function setValueOfObjectProperty(inputObject, propertyName, newValue) {
   return objectToReturn;
 }
 
-// Javított buborékrendezés objektumokkal feltöltött tömbre.
+// Javított buborékrendezés objektumokkal feltöltött tömbre. STRING-RE!
 // Paraméter: tömb, objektum tulajdonsága.
 // Visszatérési érték, sorbarendezett új tömb
-function advBubbleSortArrayOfObjects(inputArray, propertyName) {
+function advBubbleSortArrayOfObjectsString(inputArray, propertyName) {
   var arrayToReturn = copyArray(inputArray);
   var i = arrayToReturn.length - 1;
   var j = 0;
   while (i >= 2) {
     var csere = 0;
     for (j = 0; j < i; j++) {
-      if (arrayToReturn[j][`${propertyName}`] > arrayToReturn [j + 1][`${propertyName}`]) {
+      var str1 = arrayToReturn[j][`${propertyName}`].toString();
+      var str2 = arrayToReturn[j + 1][`${propertyName}`].toString();
+      if (str1.localeCompare(str2) > 0) {
+        [arrayToReturn[j], arrayToReturn[j + 1]] = [arrayToReturn[j + 1], arrayToReturn[j]];
+        csere = j;
+      }
+    }
+    i = csere;
+  }
+  return arrayToReturn;
+}
+
+// Javított buborékrendezés objektumokkal feltöltött tömbre. NUMBER-re!
+// Paraméter: tömb, objektum tulajdonsága.
+// Visszatérési érték, sorbarendezett új tömb
+function advBubbleSortArrayOfObjectsNumber(inputArray, propertyName) {
+  var arrayToReturn = copyArray(inputArray);
+  var i = arrayToReturn.length - 1;
+  var j = 0;
+  while (i >= 2) {
+    var csere = 0;
+    for (j = 0; j < i; j++) {
+      if (arrayToReturn[j][`${propertyName}`] > arrayToReturn[j + 1][`${propertyName}`]) {
         [arrayToReturn[j], arrayToReturn[j + 1]] = [arrayToReturn[j + 1], arrayToReturn[j]];
         csere = j;
       }
@@ -184,19 +206,19 @@ function deleteElementFromArrayOfObjects(inputArray, key, value) {
   return arrayToReturn;
 }
 
-// Objektum adatainak kiírása konzolra
+// Objektum adatainak kiírása
 // Bemeneti paraméter: Objektum
 function printObjectDatas(inputObject) {
 // Megvizsgálom, hogy objektumot adtunk e meg paraméternek és az nem null
   if (typeof inputObject === 'object' && inputObject !== null) {
     // létrehozzuk a változót, amiben a sorokat fogjuk tárolni
-    var line = '';
+    var lines = '';
     // Bejárjuk az objektumot
     for (var i in inputObject) {
-      line += i + ' : ' + inputObject[i] + '\n';
+      lines += i + ' : ' + inputObject[i] + '\n';
     }
   }
-  console.log(line);
+  return lines;
 }
 
 // Megvizsgálja, hogy a paraméterként adott objektumokkal feltöltött tömbben melyiknem a legmagasabb az értéke
@@ -240,7 +262,7 @@ function binarySearcArrayOfObjectsByKey(InputArray, key, value) {
         // És kilép a ciklusból
         break;
         // Ha a keresési feltétel kisebb, mint a paraméter tömb middleindex indexű elemének kulcsában található érték
-      } else if (value < InputArray[middleIndex][key].toLowerCase()) {
+      } else if (value.toLowerCase() < InputArray[middleIndex][key].toLowerCase()) {
         // Az utolsó indexet a középső indexel egyel kisebb értékkel tesszük egyenlővé
         lastIndex = middleIndex - 1;
         // Egyébként (tehát ha a keresési feltétel nagyobb, mint a paraméter tömb middleindex indexű elemének kulcsában található érték)
@@ -298,7 +320,7 @@ function successAjax(xhttp) {
   }
 
   // az userDatasSet-ben tárolt tömb sorbarendezése a tömbbent tárolt cost_in_credits tulajdonság alapján javított buborékrendezéssel
-  var userDatasSorted = advBubbleSortArrayOfObjects(userDatasSet,  'cost_in_credits');
+  var userDatasSorted = advBubbleSortArrayOfObjectsNumber(userDatasSet,  'cost_in_credits');
   // Elemek törlése az userDatasSorted-ben tárolt tömbből, ahol a consumables értéke null
   var userDatasConsumables = deleteElementFromArrayOfObjects(userDatasSorted, 'consumables', null);
 
@@ -325,8 +347,8 @@ function successAjax(xhttp) {
     }
     // Megszámolom a crew===1 értékkel rendelkező járműveket
     if (userDatasConsumables[m].crew === 1) {countData += 1;}
-    // Kiírom a kapott objektum értékeit
-    printObjectDatas(userDatasConsumables[m]);
+    // Kiírom a kapott objektumok értékeit
+    console.log(printObjectDatas(userDatasConsumables[m]));
   }
   // Kiírom konzolra a crew===1 járművek mennyiségét.
   console.log('Number of vechiles where Crew = 1: ' + countData);
@@ -371,15 +393,27 @@ function successAjax(xhttp) {
   console.log('Image of the vechile having the highest leghtiness: ' + hightestData2.image);
 
   // az userDatasConsumables-ben tárolt tömb sorbarendezése a tömbbent tárolt model tulajdonság alapján javított buborékrendezéssel
-  // Akár külöön változóban is megadhatom, hogy mi alapján és mit szeretnék keresni
+  // Akár külön változóban is megadhatom, hogy mi alapján és mit szeretnék keresni
   var searcyBy = 'model';
-  var searchValue = 'yt';
+  var searchValue = document.querySelector('#search-text').value;
+
 
   // A keresési feltételeket váltzóként adom át a sorbarendező és kereső algoritmusoknak
-  var userDatasName = advBubbleSortArrayOfObjects(userDatasConsumables,  searcyBy);
+  var userDatasSearchBy = advBubbleSortArrayOfObjectsString(userDatasConsumables,  searcyBy);
+  console.log(userDatasSearchBy);
   // Az userDatasName-ben tárolt tömbben rákeresek a szóegyezésre
-  var objectToSearch = binarySearcArrayOfObjectsByKey(userDatasName, searcyBy, searchValue);
+  var objectToSearch = binarySearcArrayOfObjectsByKey(userDatasSearchBy, searcyBy, searchValue);
   // kiírom konzolja az így kapott hajó adatait
-  printObjectDatas(objectToSearch);
+  console.log(printObjectDatas(objectToSearch));
+  //
+  //
+  //
+  // /////////////////////////////////////////////////////////////////////////////////////////////////////
+  // HTML manipulációlk
+  document.getElementsByClassName('spaceship-name')[0].innerHTML = objectToSearch.model;
+
+  document.getElementsByClassName('spaceship-data')[0].innerHTML =  '<pre>' + printObjectDatas(objectToSearch) + '</pre>';
 }
+
+
 getData('/json/spaceships.json', successAjax);

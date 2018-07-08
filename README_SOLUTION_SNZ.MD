@@ -99,3 +99,5 @@ Bejárom a tömbben tárolt objektumokat és sorban kiírom az adatokat a konzol
         Az első találatot adja vissza a függvény.
     
     A hajó adatait a konzolra írom ki.
+
+    A hajó adatait a HTML-be is exportálom
