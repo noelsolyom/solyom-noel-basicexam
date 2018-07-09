@@ -5,6 +5,8 @@ Mivel az összes függvény egyazon fájlban található, emiatt az app.js fájl
 
 A feladatban nem volt benne, egy kevés kutatómunkával alap szinten exportáltam a kapott adatokat a mellékelt HTML-be is.
 
+A "DS-1 Orbital Battle Station" modellnév alatt szereplő jármű "cargo_capacity" tulajdonságánál valamiért nem módosult az érték típusa number-re. Azért furcsa, mert a "cost_in_credits" tulajdonságnál az érték pont ugyan akkora, és mindkét tulajdonságot ugyan azzal az algoritmussal próláltam számmá alakítani.
+
 Feladat megoldásának menete:
 
 1. A kapott adatokat rendezd ár(cost_in_credits) szerint növekvő sorrendbe. (advanced bubble)
