@@ -3,6 +3,8 @@ Az app.js fájlba írt függvények majdnem minden lépése kommentelve van. Ebb
 
 Mivel az összes függvény egyazon fájlban található, emiatt az app.js fájl hosszú, több, mint 300 sor. Időhiány miatt nem válogattam szét az egyes függvényeket funkciójuk szerint (általános, rendező, keresó, modosító függvények), úgy az egyes fájlok külön-külön sokkal rövidebbek lennének.
 
+A feladatban nem volt benne, egy kevés kutatómunkával alap szinten exportáltam a kapott adatokat a mellékelt HTML-be is.
+
 Feladat megoldásának menete:
 
 1. A kapott adatokat rendezd ár(cost_in_credits) szerint növekvő sorrendbe. (advanced bubble)
@@ -90,6 +92,8 @@ Bejárom a tömbben tárolt objektumokat és sorban kiírom az adatokat a konzol
     * Írasd ki a hajó adatait.
 
     MEGJEGYZÉS: ahhoz, hogy logaritmikus keresőalgorimust hasunálhassak bármilyen adatstruktúrán, feltétel, hogy a keresési szempont szerint rendezetten legyenek az adatok.
+
+    Menet közben derült ki, hogy a rendező algoritmusom csak számok esetén működik jól, így módosítanom kellett STRINGekre is és két külön függvényben rendezem a különböző értékek szerint.
 
     Összetett a feladat;
     Első lépésben sorbarendezem az adatokat "model" azaz név szerint.

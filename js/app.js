@@ -331,7 +331,7 @@ function successAjax(xhttp) {
 
   // változó létrehozása adatok számlálásához
   var countData = 0;
-
+  var list = '';
   for (var m = 0; m < userDatasConsumables.length; m++) {
     // Megvizsgálom, hogy a crew tulajdonság nem lett e korábban módosítva.
     if (userDatasConsumables[m].crew !== 'unknown') {
@@ -342,7 +342,11 @@ function successAjax(xhttp) {
     if (userDatasConsumables[m].crew === 1) {countData += 1;}
     // Kiírom a kapott objektumok értékeit
     console.log(printObjectDatas(userDatasConsumables[m]));
+    // Összegyűjtöm a kapott értékeket
+    list += printObjectDatas(userDatasConsumables[m]) + '\n';
   }
+  // És kirakom a HTML-be
+  document.getElementsByClassName('list')[0].innerHTML =  list;
   // Kiírom konzolra a crew===1 járművek mennyiségét.
   console.log('Number of vechiles where Crew = 1: ' + countData);
 
@@ -393,7 +397,6 @@ function successAjax(xhttp) {
 
   // A keresési feltételeket váltzóként adom át a sorbarendező és kereső algoritmusoknak
   var userDatasSearchBy = advBubbleSortArrayOfObjectsString(userDatasConsumables,  searcyBy);
-  console.log(userDatasSearchBy);
   // Az userDatasName-ben tárolt tömbben rákeresek a szóegyezésre
   var objectToSearch = binarySearcArrayOfObjectsByKey(userDatasSearchBy, searcyBy, searchValue);
   // kiírom konzolja az így kapott hajó adatait
@@ -405,7 +408,7 @@ function successAjax(xhttp) {
   // HTML manipulációlk
   document.getElementsByClassName('spaceship-name')[0].innerHTML = objectToSearch.model;
 
-  document.getElementsByClassName('spaceship-data')[0].innerHTML =  '<pre>' + printObjectDatas(objectToSearch) + '</pre>';
+  document.getElementsByClassName('spaceship-data')[0].innerHTML =   printObjectDatas(objectToSearch);
 }
 
 

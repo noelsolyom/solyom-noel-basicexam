@@ -60,6 +60,19 @@ div{
   cursor: pointer;
 }
 
+.noel-text-white {
+  color: #fff;
+}
+
+.noel-text-sorted-list {
+  font-weight: bold;
+  font-size: 1.3em;
+}
+
+p {
+  white-space: pre-line;
+}
+
 @media(min-width:1200px){
   .spaceship-list{
     width: 75%;
